@@ -1,0 +1,75 @@
+import pandas as pd
+
+def cargar_datos(archivo_csv):
+    """
+    Lee el archivo CSV y retorna un DataFrame de Pandas.
+    
+    Args:
+    archivo_csv (str): Ruta del archivo CSV.
+    
+    Returns:
+    pandas.DataFrame: DataFrame con los datos del archivo CSV.
+    """
+    return pd.read_csv(archivo_csv)
+
+def calcular_estadisticas(datos):
+    """
+    Calcula estadísticas sobre el DataFrame proporcionado.
+    
+    Args:
+    datos (pandas.DataFrame): DataFrame con los datos.
+    
+    Returns:
+    tuple: Un tuple que contiene un DataFrame con las estadísticas calculadas
+    y el número de muestras que cumplen la condición especificada.
+    """
+    # Calcula estadísticas
+    estadisticas = datos.describe()
+    
+    # Número de muestras que cumplen la condición
+    muestras_condicion = datos[(datos['densidad_aparente'] > 2.3) & (datos['resistividad_profunda'] < 0.8)]
+    num_muestras_condicion = muestras_condicion.shape[0]
+    
+    # Clasificación de muestras según Gamma Ray
+    datos['categoria_gamma'] = pd.cut(datos['gamma_ray'], bins=[-float('inf'), 40, 60, float('inf')], labels=['Baja', 'Media', 'Alta'])
+    
+    return estadisticas, num_muestras_condicion
+
+def resumir_datos(estadisticas, num_muestras_condicion, datos):
+    """
+    Imprime un resumen con los resultados de las estadísticas y el conteo de categorías Gamma Ray.
+    
+    Args:
+    estadisticas (pandas.DataFrame): DataFrame con las estadísticas calculadas.
+    num_muestras_condicion (int): Número de muestras que cumplen la condición especificada.
+    datos (pandas.DataFrame): DataFrame con los datos y la categoría de Gamma Ray.
+    """
+    # Imprime estadísticas
+    print("Estadísticas:")
+    print(estadisticas)
+    print()
+    
+    # Imprime conteo de categorías Gamma Ray
+    conteo_gamma = datos['categoria_gamma'].value_counts()
+    print("Conteo de categorías Gamma Ray:")
+    print(conteo_gamma)
+    print()
+    
+    # Imprime número de muestras que cumplen la condición
+    print(f"Número de muestras con densidad aparente > 2.3 y resistividad profunda < 0.8: {num_muestras_condicion}")
+
+# Cargar datos, calcular estadísticas y mostrar resumen
+def resultados(archivo_csv):
+    """
+    Carga los datos desde un archivo CSV, calcula estadísticas y muestra un resumen.
+    
+    Args:
+    archivo_csv (str): Ruta del archivo CSV.
+    """
+    datos = cargar_datos(archivo_csv)
+    estadisticas, num_muestras_condicion = calcular_estadisticas(datos)
+    resumir_datos(estadisticas, num_muestras_condicion, datos)
+
+# Ejemplo de uso:
+archivo_csv = "registro_pozos.csv"
+resultados(archivo_csv)
