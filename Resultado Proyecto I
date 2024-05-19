@@ -1,0 +1,18 @@
+Estadísticas:
+          Profundidad  densidad_aparente  resistividad_profunda    gamma_ray
+count      285.000000         285.000000             285.000000   285.000000
+mean   4617.576000           2.496895              14.471526    49.567421
+std        7.531083           0.186797                2.222246    15.001214
+min     4611.063200          2.376400               0.438800     0.601800
+25%     4611.841600          2.396800              13.019900    46.209000
+50%     4617.576000          2.515600              14.735700    50.585900
+75%     4623.310400          2.527700              16.394800    57.021700
+max     4629.044800          2.570200              21.039200    90.907100
+
+Conteo de categorías Gamma Ray:
+Media    118
+Baja     114
+Alta      53
+Name: categoria_gamma, dtype: int64
+
+Número de muestras con densidad aparente > 2.3 y resistividad profunda < 0.8: 3
